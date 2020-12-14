@@ -60,14 +60,14 @@ describe 'Items API' do
   it 'can create a new item' do
     merchant = create(:merchant)
 
-    item_params = {
+    item_params = ({
       name: 'Multipass',
       description: 'Mool-tee-pass',
       unit_price: 99.99,
       merchant_id: merchant.id
-    }
+    })
 
-    headers = { 'CONTENT_TYPE' => 'applicaiont/json' }
+    headers = { 'CONTENT_TYPE' => 'application/json' }
 
     post '/api/v1/items', headers: headers, params: JSON.generate(item: item_params)
 
