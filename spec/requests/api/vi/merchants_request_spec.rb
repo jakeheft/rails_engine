@@ -90,4 +90,31 @@ describe 'Merchants API' do
     expect(merchant_1.name).to eq("Merchant 1")
     expect(merchant_3.name).to eq("Merchant 3")
   end
+
+  it 'can destroy a merchant' do
+    merchant = create(:merchant)
+
+    expect(Merchant.count).to eq(1)
+
+    delete "/api/v1/merchants/#{merchant.id}"
+
+    expect(response).to be_successful
+    expect(Merchant.count).to eq(0)
+    expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'will destroy merchants items when merchant is destroyed' do
+    merchant = create(:merchant)
+    item_1 = create(:item, merchant: merchant)
+    item_2 = create(:item, merchant: merchant)
+    
+    expect(Item.count).to eq(2)
+
+    delete "/api/v1/merchants/#{merchant.id}"
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect{Item.find(item_1.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    expect{Item.find(item_2.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
