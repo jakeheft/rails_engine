@@ -8,16 +8,17 @@ describe 'Merchants API' do
 
     expect(response).to be_successful
 
-    merchants = JSON.parse(response.body, symbolize_names: true)
+    merchant_data = JSON.parse(response.body, symbolize_names: true)
+    merchants = merchant_data[:data]
 
     expect(merchants.count).to eq(3)
 
     merchants.each do |merchant|
-      expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to be_an(Integer)
+      expect(merchant[:attributes]).to have_key(:id)
+      expect(merchant[:attributes][:id]).to be_an(Integer)
 
-      expect(merchant).to have_key(:name)
-      expect(merchant[:name]).to be_a(String)
+      expect(merchant[:attributes]).to have_key(:name)
+      expect(merchant[:attributes][:name]).to be_a(String)
     end
   end
 
@@ -26,7 +27,8 @@ describe 'Merchants API' do
 
     get "/api/v1/merchants/#{id}"
 
-    merchant = JSON.parse(response.body, symbolize_names: true)
+    merchant_data = JSON.parse(response.body, symbolize_names: true)
+    merchant = merchant_data[:data][:attributes]
 
     expect(response).to be_successful
 
@@ -38,12 +40,11 @@ describe 'Merchants API' do
   end
 
   it 'can create a new merchant' do
-    merchant_params = {name: 'Zorg Enterprises'
-    }
+    merchant_params = { name: 'Zorg Enterprises' }
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant: merchant_params)
+    post '/api/v1/merchants', headers: headers, params: JSON.generate(merchant_params)
     created_merchant = Merchant.last
 
     expect(response).to be_successful
@@ -57,7 +58,7 @@ describe 'Merchants API' do
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate({ merchant: merchant_params })
+    patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate(merchant_params)
     merchant = Merchant.find(id)
 
     expect(response).to be_successful
@@ -81,7 +82,7 @@ describe 'Merchants API' do
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    patch "/api/v1/merchants/#{merchant_2_id}", headers: headers, params: JSON.generate({ merchant: merchant_params })
+    patch "/api/v1/merchants/#{merchant_2_id}", headers: headers, params: JSON.generate(merchant_params)
     merchant = Merchant.find(merchant_2_id)
 
     expect(response).to be_successful
@@ -107,7 +108,7 @@ describe 'Merchants API' do
     merchant = create(:merchant)
     item_1 = create(:item, merchant: merchant)
     item_2 = create(:item, merchant: merchant)
-    
+
     expect(Item.count).to eq(2)
 
     delete "/api/v1/merchants/#{merchant.id}"

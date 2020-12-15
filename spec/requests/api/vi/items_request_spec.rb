@@ -9,26 +9,27 @@ describe 'Items API' do
 
     expect(response).to be_successful
 
-    items = JSON.parse(response.body, symbolize_names: true)
+    item_data = JSON.parse(response.body, symbolize_names: true)
+    items = item_data[:data]
 
     expect(items.count).to eq(3)
 
     items.each do |item|
-      expect(item).to have_key(:id)
-      expect(item[:id]).to be_an(Integer)
+      expect(item[:attributes]).to have_key(:id)
+      expect(item[:attributes][:id]).to be_an(Integer)
 
-      expect(item).to have_key(:name)
-      expect(item[:name]).to be_a(String)
+      expect(item[:attributes]).to have_key(:name)
+      expect(item[:attributes][:name]).to be_a(String)
 
-      expect(item).to have_key(:description)
-      expect(item[:description]).to be_a(String)
+      expect(item[:attributes]).to have_key(:description)
+      expect(item[:attributes][:description]).to be_a(String)
 
-      expect(item).to have_key(:unit_price)
-      expect(item[:unit_price]).to be_an(Float)
+      expect(item[:attributes]).to have_key(:unit_price)
+      expect(item[:attributes][:unit_price]).to be_an(Float)
 
-      expect(item).to have_key(:merchant_id)
-      expect(item[:merchant_id]).to be_an(Integer)
-      expect(item[:merchant_id]).to eq(merchant.id)
+      expect(item[:attributes]).to have_key(:merchant_id)
+      expect(item[:attributes][:merchant_id]).to be_an(Integer)
+      expect(item[:attributes][:merchant_id]).to eq(merchant.id)
     end
   end
 
@@ -37,7 +38,8 @@ describe 'Items API' do
 
     get "/api/v1/items/#{id}"
 
-    item = JSON.parse(response.body, symbolize_names: true)
+    item_data = JSON.parse(response.body, symbolize_names: true)
+    item = item_data[:data][:attributes]
 
     expect(response).to be_successful
 
@@ -69,7 +71,7 @@ describe 'Items API' do
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    post '/api/v1/items', headers: headers, params: JSON.generate(item: item_params)
+    post '/api/v1/items', headers: headers, params: JSON.generate(item_params)
 
     created_item = Item.last
 
@@ -88,7 +90,7 @@ describe 'Items API' do
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate(item: item_params)
+    patch "/api/v1/items/#{id}", headers: headers, params: JSON.generate(item_params)
     item = Item.find(id)
 
     expect(response).to be_successful
@@ -112,7 +114,7 @@ describe 'Items API' do
 
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
-    patch "/api/v1/items/#{item_2_id}", headers: headers, params: JSON.generate({ item: item_params })
+    patch "/api/v1/items/#{item_2_id}", headers: headers, params: JSON.generate(item_params)
     item = Item.find(item_2_id)
 
     expect(response).to be_successful
@@ -127,10 +129,10 @@ describe 'Items API' do
 
     expect(Item.count).to eq(1)
 
-    delete "/api/v1/items/#{item.id}"
+    response = delete "/api/v1/items/#{item.id}"
 
-    expect(response).to be_successful
+    expect(response).to eq(204)
     expect(Item.count).to eq(0)
-    expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    expect { Item.find(item.id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
