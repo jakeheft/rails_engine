@@ -17,13 +17,6 @@ CSV.foreach(Rails.root.join('db/data/items.csv'), headers: true) do |row|
   Item.create(row.to_h)
 end
 
-# ActiveRecord::Base.connection.reset_pk_sequence!('invoice_items')
-# ActiveRecord::Base.connection.reset_pk_sequence!('items')
-# ActiveRecord::Base.connection.reset_pk_sequence!('transactions')
-# ActiveRecord::Base.connection.reset_pk_sequence!('invoices')
-# ActiveRecord::Base.connection.reset_pk_sequence!('customers')
-# ActiveRecord::Base.connection.reset_pk_sequence!('merchants')
-
 ActiveRecord::Base.connection.tables.each do |t|
   ActiveRecord::Base.connection.reset_pk_sequence!(t)
 end
