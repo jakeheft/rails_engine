@@ -95,4 +95,42 @@ describe 'Items API' do
     expect(item.name).to_not eq(previous_name)
     expect(item.name).to eq(item_params[:name])
   end
+
+  # edge
+  it 'will only update a single record' do
+    item_1 = create(:item)
+    item_2 = create(:item)
+    item_3 = create(:item)
+
+    item_1.name = 'Item 1'
+    item_2.name = 'Item 2'
+    item_3.name = 'Item 3'
+
+    item_2_id = item_2.id
+    previous_name = item_2.name
+    item_params = { name: 'Meat Popsicle' }
+
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    patch "/api/v1/items/#{item_2_id}", headers: headers, params: JSON.generate({ item: item_params })
+    item = Item.find(item_2_id)
+
+    expect(response).to be_successful
+    expect(item.name).to_not eq(previous_name)
+    expect(item.name).to eq('Meat Popsicle')
+    expect(item_1.name).to eq("Item 1")
+    expect(item_3.name).to eq("Item 3")
+  end
+
+  it 'can destroy an item' do
+    item = create(:item)
+
+    expect(Item.count).to eq(1)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
