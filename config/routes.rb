@@ -8,6 +8,9 @@ Rails.application.routes.draw do
         get '/:id/items', to: 'items#index'
       end
       resources :items, except: %i[new edit]
+      namespace :items do
+        get '/:id/merchants', to: 'merchants#index'
+      end
     end
   end
 end
