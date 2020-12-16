@@ -19,13 +19,6 @@ class Api::V1::ItemsController < ApplicationController
 
   def destroy
     Item.destroy(params[:id])
-    # render status: 204
-  end
-
-  def find
-    attribute = params.keys.first
-    value = params.values.first
-    render json: ItemSerializer.new(Item.where("#{attribute} iLIKE '%#{value}%'").first)
   end
 
   private
