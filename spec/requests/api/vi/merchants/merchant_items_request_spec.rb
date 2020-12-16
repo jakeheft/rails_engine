@@ -35,7 +35,7 @@ describe 'Merchant Items API' do
   # edge
   it 'wont get another merchants items' do
     merchant = create(:merchant)
-    items = create_list(:item, 5, merchant: merchant)
+    create_list(:item, 5, merchant: merchant)
     merchant_2 = create(:merchant)
     other_merchants_item = create(:item, merchant: merchant_2)
 
