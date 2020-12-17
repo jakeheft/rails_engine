@@ -3,7 +3,7 @@ class Api::V1::Items::FindController < ApplicationController
     attribute = params.keys.first
     value = params.values.first
     if attribute == 'created_at' || attribute == 'updated_at'
-      render json: ItemSerializer.new(Item.find_by())
+      render json: ItemSerializer.new(Item.find_by("#{attribute} = ?", "#{value}"))
     else
       render json: ItemSerializer.new(Item.find_by("#{attribute} iLIKE '%#{value}%'"))
     end
