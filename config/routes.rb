@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :merchants do
+        get '/find', to: 'find#show'
+        get '/find_all', to: 'find#index'
         get '/most_revenue', to: 'business_intelligence#most_revenue'
         get '/most_items', to: 'business_intelligence#most_items_sold'
         get '/:id/items', to: 'items#index'
@@ -10,6 +12,7 @@ Rails.application.routes.draw do
       resources :merchants, except: %i[new edit]
       namespace :items do
         get '/find', to: 'find#show'
+        get '/find_all', to: 'find#index'
         get '/:id/merchants', to: 'merchants#index'
       end
       resources :items, except: %i[new edit]
