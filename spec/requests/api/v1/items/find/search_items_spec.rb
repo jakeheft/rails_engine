@@ -35,19 +35,20 @@ describe 'Record search' do
   end
 
   it 'can find a single item by created_at' do
-    create(:item,)
-    create(:item)
+    item_1 = create(:item, created_at: '2020-11-16T00:00:00 UTC')
+    item_2 = create(:item, created_at: '2020-12-16T00:00:00 UTC')
 
-    get '/api/v1/items/find?created_at=2020_12_16T00:00:00 UTC'
+    get '/api/v1/items/find?created_at=2020-12-16T00:00:00 UTC'
 
     expect(response).to be_successful
 
     json = JSON.parse(response.body, symbolize_names: true)
     item = json[:data][:attributes]
-    created_at = item[:created_at].downcase
-# require "pry"; binding.pry
-    expect(created_at).to include('2020')
-    expect(created_at).to_not include('00:00')
+    created_at = item[:created_at]
+    
+    expect(item).to be_a(Hash)
+    expect(item[:id]).to eq(item_2.id)
+    expect(created_at).to include('12')
   end
 
   it 'can find multiple items by name' do
