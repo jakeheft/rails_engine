@@ -15,7 +15,7 @@ class Api::V1::Items::FindController < ApplicationController
     if attribute == 'name' || attribute == 'description'
       render json: ItemSerializer.new(Item.where("#{attribute} iLIKE '%#{value}%'"))
     else
-      render json: ItemSerializer.new(Item.where("#{attribute} = ?", "'%#{value}%'"))
+      render json: ItemSerializer.new(Item.where("#{attribute} = ?", "#{value}"))
     end
   end
 end
