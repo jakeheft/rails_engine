@@ -34,8 +34,6 @@ describe 'Business intelligence' do
     @trans4 = create(:transaction, invoice: @inv4, result: 'success')
     @trans5 = create(:transaction, invoice: @inv5, result: 'success')
     @trans6 = create(:transaction, invoice: @inv6, result: 'failed')
-
-
   end
 
   it 'can get single merchant with the most revenue' do
@@ -115,5 +113,17 @@ describe 'Business intelligence' do
 
     expect(revenue).to be_a(Float)
     expect(revenue).to eq(172.0)
+  end
+
+  it 'can get revenue for a merchant' do
+    get "/api/v1/merchants/#{@merchant1.id}/revenue"
+
+    expect(response).to be_successful
+
+    json = JSON.parse(response.body, symbolize_names: true)
+    revenue = json[:data][:attributes][:revenue]
+
+    expect(revenue).to be_a(Float)
+    expect(revenue).to eq(100.00)
   end
 end
