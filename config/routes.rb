@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get '/most_revenue', to: 'business_intelligence#most_revenue'
         get '/most_items', to: 'business_intelligence#most_items_sold'
         get '/:id/items', to: 'items#index'
+        get '/:id/revenue', to: 'business_intelligence#merchant_revenue'
       end
       resources :merchants, except: %i[new edit]
       namespace :items do
