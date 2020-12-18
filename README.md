@@ -36,18 +36,3 @@ Rails Engine is an e-commerce application that tracks merchants, customer, items
 To test the interconnectivity of this application with the Front-End application (rails_driver),  run `rails s` while inside this project's root directory (rails_engine child directory). Then in another terminal window, run `bundle exec rspec spec/features/harness_spec.rb` to run the tests.
 
 The Back-End has also been fully tested with 100% test coverage in SimpleCov.
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* System dependencies
-
-* Configuration
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
