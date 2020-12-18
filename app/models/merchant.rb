@@ -9,4 +9,8 @@ class Merchant < ApplicationRecord
   def self.most_items_sold(quantity)
     Merchant.joins(invoices: %i[transactions invoice_items]).select('merchants.*, SUM(invoice_items.quantity) AS quantity').where('transactions.result = ?', 'success').group(:id).order('quantity DESC').limit(quantity)
   end
+
+  def self.revenue(merchant_id)
+    Merchant.joins(invoices: [:transactions, :invoice_items]).select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue').where('transactions.result = ?', 'success').where('invoices.status = ?', 'shipped').where('merchants.id = ?', "#{merchant_id}")
+  end
 end
