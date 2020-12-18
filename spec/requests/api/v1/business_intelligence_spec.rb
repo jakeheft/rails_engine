@@ -126,4 +126,17 @@ describe 'Business intelligence' do
     expect(revenue).to be_a(Float)
     expect(revenue).to eq(100.00)
   end
+
+  # edge
+  it 'will not add revenue if status is failed' do
+    get "/api/v1/merchants/#{@merchant5.id}/revenue"
+
+    expect(response).to be_successful
+
+    json = JSON.parse(response.body, symbolize_names: true)
+    revenue = json[:data][:attributes][:revenue]
+
+    expect(revenue).to_not eq(550.0)
+    expect(revenue).to eq(50.0)
+  end
 end
