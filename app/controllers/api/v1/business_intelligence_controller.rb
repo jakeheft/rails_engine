@@ -18,4 +18,12 @@ class Api::V1::BusinessIntelligenceController < ApplicationController
       render json: MerchantSerializer.new(merchant_data)
     end
   end
+
+  def revenue_date_range
+    start_time = params[:start]
+    end_time = params[:end]
+    end_time += 'T23:59:59'
+    revenue_data = Invoice.revenue_date_range(start_time, end_time)
+    render json: RevenueSerializer.revenue(revenue_data)
+  end
 end
