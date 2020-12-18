@@ -66,7 +66,6 @@ describe 'Merchants API' do
     expect(merchant.name).to eq('Fhloston Cruiselines')
   end
 
-  # edge
   it 'will only update a single record' do
     merchant_1 = create(:merchant)
     merchant_2 = create(:merchant)

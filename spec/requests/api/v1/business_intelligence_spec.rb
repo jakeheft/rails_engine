@@ -102,7 +102,6 @@ describe 'Business intelligence' do
     expect(revenue).to eq(172.0)
   end
 
-  # edge
   it 'can get revenue across a date range including invoices on end date' do
     get '/api/v1/revenue?start=2020-03-01&end=2020-04-04'
 
@@ -127,7 +126,6 @@ describe 'Business intelligence' do
     expect(revenue).to eq(100.00)
   end
 
-  # edge
   it 'will not add revenue if status is failed' do
     get "/api/v1/merchants/#{@merchant5.id}/revenue"
 
