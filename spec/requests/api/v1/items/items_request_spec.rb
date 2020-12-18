@@ -98,7 +98,6 @@ describe 'Items API' do
     expect(item.name).to eq(item_params[:name])
   end
 
-  # edge
   it 'will only update a single record' do
     item_1 = create(:item)
     item_2 = create(:item)

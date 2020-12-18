@@ -32,7 +32,6 @@ describe 'Merchant Items API' do
     end
   end
 
-  # edge
   it 'wont get another merchants items' do
     merchant = create(:merchant)
     create_list(:item, 5, merchant: merchant)
