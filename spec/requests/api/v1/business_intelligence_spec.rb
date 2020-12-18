@@ -17,7 +17,7 @@ describe 'Business intelligence' do
     @inv1 = create(:invoice, merchant: @merchant1, status: 'shipped', created_at: '2020-01-01T00:00:00 UTC')
     @inv2 = create(:invoice, merchant: @merchant2, status: 'shipped', created_at: '2020-02-02T00:00:00 UTC')
     @inv3 = create(:invoice, merchant: @merchant3, status: 'shipped', created_at: '2020-03-03T00:00:00 UTC')
-    @inv4 = create(:invoice, merchant: @merchant4, status: 'shipped', created_at: '2020-04-04T00:00:00 UTC')
+    @inv4 = create(:invoice, merchant: @merchant4, status: 'shipped', created_at: '2020-04-04T00:01:00 UTC')
     @inv5 = create(:invoice, merchant: @merchant5, status: 'shipped', created_at: '2020-05-05T00:00:00 UTC')
     @inv6 = create(:invoice, merchant: @merchant5, status: 'packaged', created_at: '2020-06-06T00:00:00 UTC')
 
@@ -38,7 +38,7 @@ describe 'Business intelligence' do
 
   end
 
-  it 'can get merchant with the most revenue' do
+  it 'can get single merchant with the most revenue' do
     get '/api/v1/merchants/most_revenue?quantity=1'
 
     expect(response).to be_successful
@@ -60,12 +60,12 @@ describe 'Business intelligence' do
     merchants = json[:data]
 
     expect(merchants).to be_a(Array)
-    expect(merchants.count).to eq (3)
+    expect(merchants.count).to eq(3)
     expect(merchants.first[:attributes][:name]).to eq(@merchant1.name)
     expect(merchants.first[:attributes][:id]).to eq(@merchant1.id)
   end
 
-  it 'can get merchant with the most items sold' do
+  it 'can get single merchant with the most items sold' do
     get '/api/v1/merchants/most_items?quantity=1'
 
     expect(response).to be_successful
@@ -90,5 +90,30 @@ describe 'Business intelligence' do
     expect(merchants.count).to eq(3)
     expect(merchants.first[:attributes][:name]).to eq(@merchant5.name)
     expect(merchants.first[:attributes][:id]).to eq(@merchant5.id)
+  end
+
+  it 'can get revenue across a date range' do
+    get '/api/v1/revenue?start=2020-03-01&end=2020-05-01'
+
+    expect(response).to be_successful
+
+    json = JSON.parse(response.body, symbolize_names: true)
+    revenue = json[:data][:attributes][:revenue]
+
+    expect(revenue).to be_a(Float)
+    expect(revenue).to eq(172.0)
+  end
+
+  # edge
+  it 'can get revenue across a date range including invoices on end date' do
+    get '/api/v1/revenue?start=2020-03-01&end=2020-04-04'
+
+    expect(response).to be_successful
+
+    json = JSON.parse(response.body, symbolize_names: true)
+    revenue = json[:data][:attributes][:revenue]
+
+    expect(revenue).to be_a(Float)
+    expect(revenue).to eq(172.0)
   end
 end
