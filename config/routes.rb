@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         get '/:id/merchants', to: 'merchants#index'
       end
       resources :items, except: %i[new edit]
+      get '/revenue', to: 'business_intelligence#revenue_date_range'
     end
   end
 end
