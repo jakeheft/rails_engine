@@ -44,11 +44,10 @@ describe 'Record search' do
 
     json = JSON.parse(response.body, symbolize_names: true)
     item = json[:data][:attributes]
-    created_at = item[:created_at]
+    found_item = Item.find(item[:id])
 
     expect(item).to be_a(Hash)
     expect(item[:id]).to eq(item_2.id)
-    expect(created_at).to include('12')
   end
 
   it 'can find a single item by price' do
@@ -120,9 +119,11 @@ describe 'Record search' do
 
     expect(items).to be_an(Array)
     expect(items.count).to eq(2)
+    expect(items[0][:id]).to eq(item_2.id.to_s)
+    expect(items[1][:id]).to eq(item_3.id.to_s)
+    expect(items[2]).to eq(nil)
     items.each do |item|
-      expect(item[:attributes][:created_at]).to include('12')
-      expect(item[:attributes][:created_at]).to_not include('11')
+      expect(item[:id]).to_not eq(item_1.id.to_s)
       expect(item).to be_a(Hash)
     end
   end
