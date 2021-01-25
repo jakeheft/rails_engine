@@ -16,20 +16,19 @@ Rails Engine is an e-commerce application that tracks merchants, customer, items
 ## Setup
 1. Create a directory (e.g. rails_engine) as a parent directory
 1. `cd` into that directory and run the following commands:
+   - To clone the [front end repo](https://github.com/turingschool-examples/rails_driver.git) of this project that contains a test suite  
+
 
    ```
    git clone git@github.com:turingschool-examples/rails_driver.git
    ```  
    
-   - This will clone the [front end repo](https://github.com/turingschool-examples/rails_driver.git) of this project that contains a test suite  
-
+   - To clone the [back end repo](https://github.com/jakeheft/rails_engine) of this project  
    ```
    git clone git@github.com:jakeheft/rails_engine.git
    ```  
-   
-   - This will clone the [back end repo](https://github.com/jakeheft/rails_engine) of this project  
 
-   **_Both of these directories should live inside the parent directory you made_**
+   **_Both of these directories should live inside the parent directory you made_**  
 1. `cd` into rails_engine (child directory) and run `bundle install` and then ` rails g rspec:install`
 1. From inside the rails_engine (child directory), run `rails db:{drop,create,migrate,seed}`. To get the spec harness to pass (see 'Running Tests' below), you will need to have the database properly seeded.
 
