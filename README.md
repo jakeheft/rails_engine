@@ -19,12 +19,14 @@ Rails Engine is an e-commerce application that tracks merchants, customer, items
 
    ```
    git clone git@github.com:turingschool-examples/rails_driver.git
-   ```
+   ```  
+   
    - This will clone the [front end repo](https://github.com/turingschool-examples/rails_driver.git) of this project that contains a test suite  
 
    ```
    git clone git@github.com:jakeheft/rails_engine.git
-   ```
+   ```  
+   
    - This will clone the [back end repo](https://github.com/jakeheft/rails_engine) of this project  
 
    **_Both of these directories should live inside the parent directory you made_**
